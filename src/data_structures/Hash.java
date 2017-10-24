@@ -39,51 +39,6 @@ public class Hash<K, V> implements HashI<K, V> {
         numElements = 0;
     }
 
-    @SuppressWarnings("hiding")
-    class HashElement<K, V> implements Comparable<HashElement<K, V>> {
-
-        K key;
-        V value;
-
-        public HashElement(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @SuppressWarnings("unchecked")
-        public int compareTo(HashElement<K, V> o) {
-            return ((Comparable<K>) o.key).compareTo(this.key);
-        }
-    }
-
-    class IteratorHelper<T> implements Iterator<T> {
-        T[] keys;
-        int position;
-
-        @SuppressWarnings("unchecked")
-        public IteratorHelper() {
-            keys = (T[]) new Object[numElements];
-            int p = 0;
-            for (int i = 0; i < tableSize; i++) {
-                HashListI<HashElement<K, V>> list = (HashListI<Hash<K, V>.HashElement<K, V>>) hash_array[i];
-
-                for (HashElement<K, V> h : list)
-                    keys[p++] = (T) h.key;
-            }
-            position = 0;
-        }
-
-        public boolean hasNext() {
-            return position < keys.length;
-        }
-
-        public T next() {
-            if (!hasNext())
-                return null;
-            return keys[position++];
-        }
-    }
-
     /**
      * Adds the given key/value pair to the dictionary.  Returns
      * false if the dictionary is full, or if the key is a duplicate.
@@ -112,7 +67,7 @@ public class Hash<K, V> implements HashI<K, V> {
      * Returns true if the key/value pair was found and removed,
      * otherwise returns false.
      *
-     * @param key   the key to remove
+     * @param key the key to remove
      * @return true if key was removed
      */
     @SuppressWarnings("unchecked")
@@ -288,5 +243,50 @@ public class Hash<K, V> implements HashI<K, V> {
      */
     public Iterator<K> iterator() {
         return new IteratorHelper<K>();
+    }
+
+    @SuppressWarnings("hiding")
+    class HashElement<K, V> implements Comparable<HashElement<K, V>> {
+
+        K key;
+        V value;
+
+        public HashElement(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @SuppressWarnings("unchecked")
+        public int compareTo(HashElement<K, V> o) {
+            return ((Comparable<K>) o.key).compareTo(this.key);
+        }
+    }
+
+    class IteratorHelper<T> implements Iterator<T> {
+        T[] keys;
+        int position;
+
+        @SuppressWarnings("unchecked")
+        public IteratorHelper() {
+            keys = (T[]) new Object[numElements];
+            int p = 0;
+            for (int i = 0; i < tableSize; i++) {
+                HashListI<HashElement<K, V>> list = (HashListI<Hash<K, V>.HashElement<K, V>>) hash_array[i];
+
+                for (HashElement<K, V> h : list)
+                    keys[p++] = (T) h.key;
+            }
+            position = 0;
+        }
+
+        public boolean hasNext() {
+            return position < keys.length;
+        }
+
+        public T next() {
+            if (!hasNext())
+                return null;
+            return keys[position++];
+        }
     }
 }

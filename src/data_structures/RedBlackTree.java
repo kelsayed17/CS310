@@ -18,55 +18,6 @@ public class RedBlackTree<K, V> implements RedBlackI<K, V> {
         size = 0;
     }
 
-    @SuppressWarnings("hiding")
-    class Node<K, V> {
-        K key;
-        V value;
-        Node<K, V> left, right, parent;
-        boolean leftChild, black;
-
-        public Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-            left = right = parent = null;
-            black = false;
-            leftChild = false;
-        }
-    }
-
-    class IteratorHelper implements Iterator<K> {
-
-        int index;
-        K[] array;
-
-        @SuppressWarnings("unchecked")
-        public IteratorHelper() {
-            index = 0;
-            inOrder(root);
-            index = 0;
-            array = (K[]) new Object[size];
-        }
-
-        public boolean hasNext() {
-            return index < array.length;
-        }
-
-        public void inOrder(Node<K, V> node) {
-            if (node != null) {
-                inOrder(node.left);
-                array[index++] = node.key;
-                inOrder(node.right);
-            }
-        }
-
-        public K next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-
-            return array[index++];
-        }
-    }
-
     /**
      * The method to add to the RBTree.  It will not allow duplicate additions.
      *
@@ -446,5 +397,54 @@ public class RedBlackTree<K, V> implements RedBlackI<K, V> {
             System.out.println(node.key + " : " + color);
 
         print(node.right, width + 1);
+    }
+
+    @SuppressWarnings("hiding")
+    class Node<K, V> {
+        K key;
+        V value;
+        Node<K, V> left, right, parent;
+        boolean leftChild, black;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+            left = right = parent = null;
+            black = false;
+            leftChild = false;
+        }
+    }
+
+    class IteratorHelper implements Iterator<K> {
+
+        int index;
+        K[] array;
+
+        @SuppressWarnings("unchecked")
+        public IteratorHelper() {
+            index = 0;
+            inOrder(root);
+            index = 0;
+            array = (K[]) new Object[size];
+        }
+
+        public boolean hasNext() {
+            return index < array.length;
+        }
+
+        public void inOrder(Node<K, V> node) {
+            if (node != null) {
+                inOrder(node.left);
+                array[index++] = node.key;
+                inOrder(node.right);
+            }
+        }
+
+        public K next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            return array[index++];
+        }
     }
 }

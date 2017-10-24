@@ -17,80 +17,6 @@ public class LinkedList<E> implements ListI<E> {
     private Node<E> tail = null;
     private int size = 0;
 
-    @SuppressWarnings("hiding")
-    private class Node<E> {
-        private E data;
-        private Node<E> next;
-
-        // Zero argument constructor
-        public Node() {
-            data = null;
-            next = null;
-        }
-
-        // One argument constructor
-        public Node(E data) {
-            this.data = data;
-            this.next = null;
-        }
-
-        // Two argument constructor
-        public Node(E data, Node<E> next) {
-            this.data = data;
-            this.next = next;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        public E getData() {
-            return data;
-        }
-
-        public void setData(E data) {
-            this.data = data;
-        }
-    }
-
-    class IteratorHelper implements Iterator<E> {
-
-        Node<E> previous, current, next;
-
-        public IteratorHelper() {
-            current = head;
-            next = head.getNext();
-        }
-
-        public boolean hasNext() {
-            return current != null;
-        }
-
-        public E next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-
-            E tmp = current.data;
-            current = current.next;
-
-            return tmp;
-        }
-
-        public void remove() {
-            if (current == null)
-                throw new IllegalStateException();
-
-            previous.setNext(current);
-            current = null;
-            size--;
-        }
-    }
-
-
     /**
      * Appends the specified element to the end of this list.
      */
@@ -183,7 +109,6 @@ public class LinkedList<E> implements ListI<E> {
         }
         return false;
     }
-
 
     /**
      * Returns the element at the specified position in this list.
@@ -419,5 +344,78 @@ public class LinkedList<E> implements ListI<E> {
      */
     public Iterator<E> iterator() {
         return new IteratorHelper();
+    }
+
+    @SuppressWarnings("hiding")
+    private class Node<E> {
+        private E data;
+        private Node<E> next;
+
+        // Zero argument constructor
+        public Node() {
+            data = null;
+            next = null;
+        }
+
+        // One argument constructor
+        public Node(E data) {
+            this.data = data;
+            this.next = null;
+        }
+
+        // Two argument constructor
+        public Node(E data, Node<E> next) {
+            this.data = data;
+            this.next = next;
+        }
+
+        public Node<E> getNext() {
+            return next;
+        }
+
+        public void setNext(Node<E> next) {
+            this.next = next;
+        }
+
+        public E getData() {
+            return data;
+        }
+
+        public void setData(E data) {
+            this.data = data;
+        }
+    }
+
+    class IteratorHelper implements Iterator<E> {
+
+        Node<E> previous, current, next;
+
+        public IteratorHelper() {
+            current = head;
+            next = head.getNext();
+        }
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public E next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            E tmp = current.data;
+            current = current.next;
+
+            return tmp;
+        }
+
+        public void remove() {
+            if (current == null)
+                throw new IllegalStateException();
+
+            previous.setNext(current);
+            current = null;
+            size--;
+        }
     }
 }
